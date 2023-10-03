@@ -1,0 +1,139 @@
+[gd_scene load_steps=3 format=3 uid="uid://8w52nw16qjsp"]
+
+[ext_resource type="Script" path="res://Scripts/menu.gd" id="1_a6afo"]
+[ext_resource type="Texture2D" uid="uid://csxt5goon1eg8" path="res://keyboard-empty.png" id="1_xbcxs"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_a6afo")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.192157, 0.223529, 0.262745, 0.631373)
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 61.0
+offset_top = 34.0
+offset_right = 189.0
+offset_bottom = 79.0
+grow_vertical = 2
+text = "START"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -830.0
+offset_top = -290.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("1_xbcxs")
+
+[node name="Label" type="Label" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 372.0
+offset_top = 542.0
+offset_right = 412.0
+offset_bottom = 565.0
+text = "Sprint"
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 669.0
+offset_top = 591.0
+offset_right = 716.0
+offset_bottom = 617.0
+text = "Jump"
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 1055.0
+offset_top = 488.0
+offset_right = 1102.0
+offset_bottom = 514.0
+text = "Confirm"
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 335.0
+offset_top = 336.0
+offset_right = 433.0
+offset_bottom = 362.0
+text = "ESC: settings"
+vertical_alignment = 1
+
+[node name="Label5" type="Label" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 335.0
+offset_top = 316.0
+offset_right = 382.0
+offset_bottom = 342.0
+text = "Backslash: switch camera"
+vertical_alignment = 1
+
+[node name="Label6" type="Label" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 464.0
+offset_top = 431.0
+offset_right = 529.0
+offset_bottom = 457.0
+text = "Forward"
+vertical_alignment = 1
+
+[node name="Label7" type="Label" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 468.0
+offset_top = 503.0
+offset_right = 552.0
+offset_bottom = 529.0
+text = "Backwards"
+vertical_alignment = 1
+
+[node name="Label8" type="Label" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 545.0
+offset_top = 488.0
+offset_right = 592.0
+offset_bottom = 514.0
+text = "Right"
+vertical_alignment = 1
+
+[node name="Label9" type="Label" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 430.0
+offset_top = 488.0
+offset_right = 477.0
+offset_bottom = 514.0
+text = "Left"
+vertical_alignment = 1
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

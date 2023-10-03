@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://b24ke3d0cg0m0"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_1toev"]
+[ext_resource type="PackedScene" uid="uid://c50iiq4sxym4c" path="res://Scenes/debug_screen.tscn" id="2_h67mq"]
+[ext_resource type="PackedScene" uid="uid://c687wn3mmaoc8" path="res://Scenes/settings.tscn" id="3_ei7uj"]
+[ext_resource type="Material" uid="uid://bubcarn5rvmqx" path="res://Textures/Material/PurpleGrid.tres" id="3_tv4py"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_swp7f"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_y5t8c"]
+material = ExtResource("3_tv4py")
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_1toev")
+gravity = 17.0
+jump_velocity = 6.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_swp7f")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.653292, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+current = true
+frustum_offset = Vector2(1, 1)
+
+[node name="debug_screen" parent="Head/Camera3D" instance=ExtResource("2_h67mq")]
+
+[node name="Settings" parent="Head/Camera3D" instance=ExtResource("3_ei7uj")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_y5t8c")
+
+[node name="GroundCheck" type="RayCast3D" parent="."]
+target_position = Vector3(0, -2, 0)

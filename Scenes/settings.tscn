@@ -1,0 +1,128 @@
+[gd_scene load_steps=2 format=3 uid="uid://c687wn3mmaoc8"]
+
+[ext_resource type="Script" path="res://Scripts/settings.gd" id="1_puy8n"]
+
+[node name="Settings" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_puy8n")
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(0.0862745, 0.74902, 0, 1)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Settings"
+vertical_alignment = 1
+
+[node name="Gravity" type="Label" parent="."]
+self_modulate = Color(0.0862745, 0.74902, 0, 1)
+layout_mode = 0
+offset_left = 15.0
+offset_top = 50.0
+offset_right = 77.0
+offset_bottom = 76.0
+text = "Gravity:"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="Gravity"]
+layout_mode = 0
+offset_left = 62.0
+offset_right = 129.063
+offset_bottom = 31.0
+
+[node name="SPACER" type="Label" parent="."]
+self_modulate = Color(0.0862745, 0.74902, 0, 1)
+layout_mode = 0
+offset_left = 15.0
+offset_top = 76.0
+offset_right = 77.0
+offset_bottom = 102.0
+vertical_alignment = 1
+
+[node name="JumpHight" type="Label" parent="."]
+self_modulate = Color(0.0862745, 0.74902, 0, 1)
+layout_mode = 0
+offset_left = 15.0
+offset_top = 102.0
+offset_right = 102.0
+offset_bottom = 128.0
+text = "JumpHight:"
+vertical_alignment = 1
+
+[node name="LineEdit2" type="LineEdit" parent="JumpHight"]
+layout_mode = 0
+offset_left = 87.0
+offset_top = 5.0
+offset_right = 154.063
+offset_bottom = 36.0
+
+[node name="SPACER2" type="Label" parent="."]
+self_modulate = Color(0.0862745, 0.74902, 0, 1)
+layout_mode = 0
+offset_left = 15.0
+offset_top = 128.0
+offset_right = 77.0
+offset_bottom = 154.0
+vertical_alignment = 1
+
+[node name="Speed" type="Label" parent="."]
+self_modulate = Color(0.0862745, 0.74902, 0, 1)
+layout_mode = 0
+offset_left = 15.0
+offset_top = 154.0
+offset_right = 77.0
+offset_bottom = 180.0
+text = "Speed"
+vertical_alignment = 1
+
+[node name="LineEdit3" type="LineEdit" parent="Speed"]
+layout_mode = 0
+offset_left = 47.0
+offset_right = 114.063
+offset_bottom = 31.0
+
+[node name="SPACER3" type="Label" parent="."]
+self_modulate = Color(0.0862745, 0.74902, 0, 1)
+layout_mode = 0
+offset_left = 15.0
+offset_top = 180.0
+offset_right = 77.0
+offset_bottom = 206.0
+vertical_alignment = 1
+
+[node name="SprintSPeed" type="Label" parent="."]
+self_modulate = Color(0.0862745, 0.74902, 0, 1)
+layout_mode = 0
+offset_left = 15.0
+offset_top = 206.0
+offset_right = 113.0
+offset_bottom = 232.0
+text = "Sprint Speed"
+vertical_alignment = 1
+
+[node name="LineEdit4" type="LineEdit" parent="SprintSPeed"]
+layout_mode = 0
+offset_left = 98.0
+offset_top = 5.0
+offset_right = 165.063
+offset_bottom = 36.0
+
+[node name="Flex3" type="Label" parent="."]
+self_modulate = Color(0.0862745, 0.74902, 0, 1)
+layout_mode = 0
+offset_left = 15.0
+offset_top = 206.0
+offset_right = 77.0
+offset_bottom = 232.0
+vertical_alignment = 1
+
+[connection signal="text_submitted" from="Gravity/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="text_submitted" from="JumpHight/LineEdit2" to="." method="_on_line_edit_2_text_submitted"]
+[connection signal="text_submitted" from="Speed/LineEdit3" to="." method="_on_line_edit_3_text_submitted"]
+[connection signal="text_submitted" from="SprintSPeed/LineEdit4" to="." method="_on_line_edit_4_text_submitted"]
