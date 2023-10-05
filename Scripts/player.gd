@@ -12,6 +12,7 @@ To do:
 	organize the code before any other feature
 	clean the code (remove repeats) #HASDEBUG-tag for debug screen vars
 	make the code flexible with other scenes
+	remove head lean when jumping
 	
 	after the above implement features
 	-!! raycast gravity check GROUNDCHECK
