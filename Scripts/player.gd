@@ -27,7 +27,7 @@ To do:
 
 extends CharacterBody3D
 
-# HUD
+# HUD All @onready vars under #HUD are not needed for any movement of the character These vars only influence the GUI for debugging
 @onready var debug_screen = $Head/Camera3D/debug_screen
 @onready var debug_speed = $Head/Camera3D/debug_screen/Speed
 @onready var debug_velocity = $Head/Camera3D/debug_screen/Velocity
@@ -36,8 +36,8 @@ extends CharacterBody3D
 @onready var debug_flex2 = $Head/Camera3D/debug_screen/FLEX2
 @onready var debug_flex3 = $Head/Camera3D/debug_screen/FLEX3
 @onready var debug_flex4 = $Head/Camera3D/debug_screen/FLEX4
-
 @onready var settings_menu = $Head/Camera3D/Settings
+
 @onready var gravity_setting = $Head/Camera3D/Settings/Gravity/LineEdit
 @onready var jump_setting = $Head/Camera3D/Settings/JumpHight/LineEdit2
 @onready var speed_setting = $Head/Camera3D/Settings/Speed/LineEdit3
