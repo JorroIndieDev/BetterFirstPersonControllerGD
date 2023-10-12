@@ -10,11 +10,13 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_y5t8c"]
 material = ExtResource("3_tv4py")
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("head", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_1toev")
 gravity = 17.0
-jump_velocity = 6.0
+jump_force = 6.0
+head = NodePath("Head")
+camera = NodePath("Head/Camera3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_swp7f")
