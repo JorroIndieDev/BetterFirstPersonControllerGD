@@ -6,15 +6,17 @@
 [ext_resource type="Material" uid="uid://bubcarn5rvmqx" path="res://Textures/Material/PurpleGrid.tres" id="3_tv4py"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_swp7f"]
+radius = 0.45
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_y5t8c"]
 material = ExtResource("3_tv4py")
+radius = 0.45
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("head", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_1toev")
 gravity = 17.0
-jump_force = 6.0
+jump_force = 8.0
 head = NodePath("Head")
 camera = NodePath("Head/Camera3D")
 

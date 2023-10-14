@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://c687wn3mmaoc8"]
+[gd_scene load_steps=3 format=3 uid="uid://c687wn3mmaoc8"]
 
 [ext_resource type="Script" path="res://Scripts/settings.gd" id="1_puy8n"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_cdym5"]
+font_size = 12
 
 [node name="Settings" type="Control"]
 visible = false
@@ -17,8 +20,17 @@ modulate = Color(0.0862745, 0.74902, 0, 1)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
-text = "Settings"
+text = "Settings (press enter to confirm values)"
 vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="."]
+modulate = Color(0.0862745, 0.74902, 0, 1)
+layout_mode = 0
+offset_top = 26.0
+offset_right = 303.0
+offset_bottom = 52.0
+text = "Values do not reflect the values changed in  the current scene these values only reflect the player values for testing purposes"
+label_settings = SubResource("LabelSettings_cdym5")
 
 [node name="Gravity" type="Label" parent="."]
 self_modulate = Color(0.0862745, 0.74902, 0, 1)

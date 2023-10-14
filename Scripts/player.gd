@@ -69,8 +69,9 @@ var fall_contact = false
 
 # Head bobing
 const BOB_FQ = 2
-const BOB_AMP = 0.1
+const BOB_AMP = 0.05
 var t_bob = 0.0
+@export var headbobbing = true
 
 # Camera FOV
 var BASE_FOV = 75.0
@@ -92,7 +93,7 @@ var move_dir = Vector3.ZERO
 var fov_change_enable = true
 var tilt_axis = Vector3()
 var tilt_angle = deg_to_rad(45)
-var tilt_amount = deg_to_rad(15.0) # Adjust this value to control the tilt amount
+var tilt_amount = deg_to_rad(0.5) 
 var max_look_amount = 80
 
 
@@ -134,7 +135,9 @@ func _physics_process(delta):
 
 
 	# Movement CHANGE
-	var direction = Vector3(Input.get_axis("Left", "Right"), 0, Input.get_axis("Forward", "Backwards")).normalized().rotated(Vector3.UP, rotation.y)
+	var direction = Vector3(Input.get_axis("Left", "Right"),0,
+	 Input.get_axis("Forward", "Backwards")).normalized().rotated(Vector3.UP, rotation.y)
+	
 	debug_flex2.text = str(direction) #not needed
 
 	# Sprint
@@ -178,15 +181,6 @@ func _physics_process(delta):
 		velocity.z = lerp(velocity.z, direction.z * current_speed, delta * 3.0)
 
 
-	# Head bob
-	t_bob += delta * velocity.length() * float(is_on_floor())
-	
-	if velocity != Vector3.ZERO:
-		camera.transform.origin = lerp(camera.transform.origin,_headbob(t_bob),delta * 5.0)
-	else:
-		camera.transform.origin = lerp(camera.transform.origin,original_camera_pos,delta * 5.0)
-
-
 	# FOV
 	velocity_clamped = clamp(velocity.length(), 0.5, SPRINTING_SPEED * 2)
 	target_fov = BASE_FOV + FOV_CHANGE * velocity_clamped
@@ -195,7 +189,7 @@ func _physics_process(delta):
 
 	# Head tilt #HASDEBUG
 	tilt_axis = Input.get_action_strength("Left") - Input.get_action_strength("Right")
-	camera.rotation_degrees.z = clamp(camera.rotation_degrees.z + tilt_axis * tilt_amount, -tilt_angle, tilt_angle)
+	camera.rotation_degrees.z = clamp(lerp(camera.rotation_degrees.z + tilt_axis * tilt_amount,tilt_axis,delta * 5), -tilt_angle, tilt_angle)
 	camera_rotation = camera.rotation_degrees.z
 	debug_flex3.text = str(camera.rotation_degrees.z) + " tilt" #not needed
 
@@ -203,6 +197,16 @@ func _physics_process(delta):
 	if tilt_axis == 0:
 		debug_flex3.text = str(camera.rotation_degrees.z) + " stopped moving" #not needed
 		camera.rotation_degrees.z = lerp(camera_rotation,0.0,delta * 15)  # Reset rotation to zero
+
+
+	# Head bob
+	t_bob += delta * velocity.length() * float(is_on_floor())
+	
+	if velocity != Vector3.ZERO and headbobbing:
+#		original_camera_pos = camera.transform.origin
+		camera.transform.origin = lerp(camera.transform.origin,_headbob(t_bob),delta * 5.0)
+	elif velocity == Vector3.ZERO and headbobbing:
+		camera.transform.origin = lerp(camera.transform.origin,original_camera_pos,delta * 5.0)
 
 
 	# HUD Info #HASDEBUG
@@ -237,6 +241,7 @@ func ChangeGravity(value):
 
 func ChangeJump(value):
 	jump_force = value
+	print(jump_force)
 
 
 func ChangeSpeed(value):

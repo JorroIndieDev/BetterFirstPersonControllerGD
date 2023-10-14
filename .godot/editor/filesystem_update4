@@ -1,11 +1,12 @@
-res://Scenes/player.tscn
+res://Scenes/test_level.tscn
 res://Textures/Material/PurpleGrid.tres
 res://Textures/Material/DarkGrid.tres
 res://Textures/Material/OrangeGrid.tres
 res://Textures/Material/RedGrid.tres
 res://Textures/Material/greenGrid.tres
 res://Scripts/player.gd
-res://Scenes/test_level.tscn
+res://Scripts/test_level.gd
+res://Scenes/player.tscn
 res://Scenes/debug_screen.tscn
 res://Scenes/settings.tscn
 res://Scenes/menu.tscn

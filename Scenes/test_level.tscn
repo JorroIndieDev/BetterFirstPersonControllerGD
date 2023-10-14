@@ -21,8 +21,9 @@ sky = SubResource("Sky_2axdf")
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="TestLevel" type="Node3D"]
+[node name="TestLevel" type="Node3D" node_paths=PackedStringArray("player")]
 script = ExtResource("1_4gljw")
+player = NodePath("Player")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
