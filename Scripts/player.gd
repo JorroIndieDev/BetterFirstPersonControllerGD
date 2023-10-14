@@ -4,7 +4,7 @@
 --------------------------------------------------------------------------------
 	9/28/2024 - Jorro total linhas: 231
 	
-	vars used in project on @export Gravity = 17 Jump_Force = 8
+	vars used in project on @export Gravity = 22 Jump_Force = 6
 	
 To do:
 	values multiplied by delta need to be changed for @export vars
@@ -23,8 +23,11 @@ To do:
 	-ramp movement
 	for now this is all
 Currently doing:
-	verefying the code and cleaning up any "floating" variables and numbers cleaning and making sure
-	the code is readable, leave feedback so i can keep improving this controller
+	implementing crounch / slide / ramp movemnt and raycasts
+	### leave feedback so i can keep improving this controller ###
+Fixed:
+	coyote time FIXED
+	stuck between blocks FIXED
 '''
 
 
@@ -48,7 +51,7 @@ extends CharacterBody3D
 @onready var flex3_setting = $Head/Camera3D/Settings/Flex3
 # All @onready vars under #HUD are not needed for any movement of the character These vars only influence the GUI for debugging
 
-var _basis = Basis()
+var _basis = Basis() # just in case if it is needed eventually in the code
 
 # Movement Vars
 var current_speed = 0 
@@ -59,6 +62,9 @@ var current_speed = 0
 
 @export var gravity :float # 16
 @onready var ground_check = $GroundCheck
+@onready var ceiling_check = $CeilingCheck
+var coyote_timer = 0.0
+var coyote_time = 0.15
 var fall_contact = false
 
 # Jump Vars
@@ -137,7 +143,12 @@ func _physics_process(delta):
 	# Movement CHANGE
 	var direction = Vector3(Input.get_axis("Left", "Right"),0,
 	 Input.get_axis("Forward", "Backwards")).normalized().rotated(Vector3.UP, rotation.y)
-	
+	if direction and is_on_floor():
+		velocity.x = direction.x * current_speed
+		velocity.z = direction.z * current_speed
+	else:
+		velocity.x = lerp(velocity.x, direction.x * current_speed, delta * 6.7)
+		velocity.z = lerp(velocity.z, direction.z * current_speed, delta * 6.7)
 	debug_flex2.text = str(direction) #not needed
 
 	# Sprint
@@ -147,38 +158,22 @@ func _physics_process(delta):
 		current_speed = lerp(current_speed, WALKING_SPEED, delta * 5.0)
 
 
-	# Gravity
-	if not is_on_floor():
-		coyoteTime()
-
-
 	# Jump Variable
-	var is_jumping :bool = Input.is_action_pressed("Jump") and coyote_jump and can_jump
+	var is_jumping :bool = Input.is_action_pressed("Jump") and can_jump
 	
-	# Jump
-	if is_on_floor() and is_jumping:
-		velocity.y = 0
-		velocity.y = jump_force
-		can_jump = false
-		reset_jump()
-	
-	
-	# Grounded #HASDEBUG
 	if is_on_floor():
-		coyote_jump = true
-		debug_flex1.text = "null" #not needed
-		if direction:
-			velocity.x = direction.x * current_speed
-			velocity.z = direction.z * current_speed
-		else:
-			velocity.x = lerp(velocity.x, direction.x * current_speed, delta * 6.7)
-			velocity.z = lerp(velocity.z, direction.z * current_speed, delta * 6.7)
-	
-	# Not Grounded
+		coyote_timer = 0.0
+		can_jump = true
 	else:
+		coyote_timer += delta
 		velocity.y -= gravity * delta
 		velocity.x = lerp(velocity.x, direction.x * current_speed, delta * 3.0)
 		velocity.z = lerp(velocity.z, direction.z * current_speed, delta * 3.0)
+	
+	if is_jumping and coyote_timer < coyote_time:
+#		velocity.y = 0
+		velocity.y = jump_force
+		can_jump = false
 
 
 	# FOV
@@ -230,8 +225,8 @@ func reset_jump():
 
 
 func coyoteTime(): #HASDEBUG
-	await get_tree().create_timer(.1).timeout
-	debug_flex1.text = "COYOTE" #not needed
+	await get_tree().create_timer(.15).timeout
+	debug_flex1.text = "COYOTE expired" #not needed
 	coyote_jump = false
 
 # Settings Menu signals
@@ -241,7 +236,6 @@ func ChangeGravity(value):
 
 func ChangeJump(value):
 	jump_force = value
-	print(jump_force)
 
 
 func ChangeSpeed(value):

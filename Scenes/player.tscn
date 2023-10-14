@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b24ke3d0cg0m0"]
+[gd_scene load_steps=8 format=3 uid="uid://b24ke3d0cg0m0"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_1toev"]
 [ext_resource type="PackedScene" uid="uid://c50iiq4sxym4c" path="res://Scenes/debug_screen.tscn" id="2_h67mq"]
@@ -8,6 +8,10 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_swp7f"]
 radius = 0.45
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_n5607"]
+radius = 0.45
+height = 1.0
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_y5t8c"]
 material = ExtResource("3_tv4py")
 radius = 0.45
@@ -15,13 +19,18 @@ radius = 0.45
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("head", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_1toev")
-gravity = 17.0
-jump_force = 8.0
+gravity = 22.0
+jump_force = 7.0
 head = NodePath("Head")
 camera = NodePath("Head/Camera3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_swp7f")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("CapsuleShape3D_n5607")
+disabled = true
 
 [node name="Head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.653292, 0)
@@ -37,5 +46,10 @@ frustum_offset = Vector2(1, 1)
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_y5t8c")
 
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_y5t8c")
+
 [node name="GroundCheck" type="RayCast3D" parent="."]
 target_position = Vector3(0, -2, 0)
+
+[node name="CeilingCheck" type="RayCast3D" parent="."]
