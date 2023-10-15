@@ -13,7 +13,6 @@ To do:
 	after the above implement features
 	-!! raycast gravity check GROUNDCHECK
 	-ramp movement
-	-slide
 	-step climp
 	-wall jump
 	for now this is all
@@ -21,7 +20,8 @@ Currently doing:
 	implementing slide / ramp movemnt and raycasts
 	### leave feedback so i can keep improving this controller ###
 Fixed:
-	Crouch FIXED
+	Sliding FIXED
+	Crouch when under a ceiling FIXED
 '''
 
 
