@@ -9,3 +9,4 @@ res://Scenes/test_level.tscn
 res://Scenes/debug_screen.tscn
 res://Scenes/settings.tscn
 res://Scenes/menu.tscn
+res://Scripts/test_level.gd

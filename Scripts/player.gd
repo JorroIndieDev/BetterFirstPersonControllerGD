@@ -28,35 +28,38 @@ Fixed:
 extends CharacterBody3D
 
 # HUD 
-@onready var debug_screen = $Head/Camera3D/debug_screen
-@onready var debug_speed = $Head/Camera3D/debug_screen/Speed
-@onready var debug_velocity = $Head/Camera3D/debug_screen/Velocity
-@onready var debug_FOV = $Head/Camera3D/debug_screen/FOV
-@onready var debug_flex1 = $Head/Camera3D/debug_screen/FLEX1
-@onready var debug_flex2 = $Head/Camera3D/debug_screen/FLEX2
-@onready var debug_flex3 = $Head/Camera3D/debug_screen/FLEX3
-@onready var debug_flex4 = $Head/Camera3D/debug_screen/FLEX4
-@onready var settings_menu = $Head/Camera3D/Settings
+@onready var debug_screen = $Neck/Head/Camera3D/debug_screen
+@onready var debug_speed = $Neck/Head/Camera3D/debug_screen/Speed
+@onready var debug_velocity = $Neck/Head/Camera3D/debug_screen/Velocity
+@onready var debug_FOV = $Neck/Head/Camera3D/debug_screen/FOV
+@onready var debug_flex1 = $Neck/Head/Camera3D/debug_screen/FLEX1
+@onready var debug_flex2 = $Neck/Head/Camera3D/debug_screen/FLEX2
+@onready var debug_flex3 = $Neck/Head/Camera3D/debug_screen/FLEX3
+@onready var debug_flex4 = $Neck/Head/Camera3D/debug_screen/FLEX4
+@onready var settings_menu = $Neck/Head/Camera3D/Settings
 
-@onready var gravity_setting = $Head/Camera3D/Settings/Gravity/LineEdit
-@onready var jump_setting = $Head/Camera3D/Settings/JumpHight/LineEdit2
-@onready var speed_setting = $Head/Camera3D/Settings/Speed/LineEdit3
-@onready var sprint_setting = $Head/Camera3D/Settings/SprintSPeed/LineEdit4
-@onready var flex3_setting = $Head/Camera3D/Settings/Flex3
+@onready var gravity_setting = $Neck/Head/Camera3D/Settings/Gravity/LineEdit
+@onready var jump_setting = $Neck/Head/Camera3D/Settings/JumpHight/LineEdit2
+@onready var speed_setting = $Neck/Head/Camera3D/Settings/Speed/LineEdit3
+@onready var sprint_setting = $Neck/Head/Camera3D/Settings/SprintSPeed/LineEdit4
+@onready var flex3_setting = $Neck/Head/Camera3D/Settings/Flex3
 # All @onready vars under #HUD are not needed for any movement of the character These vars only influence the GUI for debugging
+
 
 var _basis = Basis() # just in case if it is needed eventually in the code
 
+
 # Movement Vars
-var current_speed = 0 
+var current_speed :float = 0 
 ## Max sprinting speed set to 9.0 as default (float) 
-@export var SPRINTING_SPEED = 9.0
+@export var SPRINTING_SPEED :float = 9.0
 ## Max walking speed set to 6.0 as default (float)
-@export var WALKING_SPEED = 6.0
+@export var WALKING_SPEED :float = 6.0
 ## Gravity not set by the engine, [gravity] is set as 22 by default (float)
 @export var gravity :float # 22
-const ACCELERATION = 6.7
-const FRICTION = 3.0
+const ACCELERATION :float= 6.7
+const FRICTION :float= 3.0
+
 
 # Crouching vars
 @onready var crouching_mesh = $crouching
@@ -64,6 +67,16 @@ const FRICTION = 3.0
 @onready var standing_mesh = $standing
 @onready var standing_collision = $StandingCollision
 var is_crouching:bool
+
+
+# Sliding vars
+var is_sliding :bool
+var slide_timer_max :float = 1.0
+var slide_timer :float = 0.0
+var slide_vector :Vector3 = Vector3.ZERO
+var is_sprinting :bool = true
+var sliding_speed :float = 10.0
+
 
 # Jump Vars
 @onready var can_jump = true
@@ -73,28 +86,33 @@ var is_crouching:bool
 @onready var ground_check = $GroundCheck
 @onready var ceiling_check = $CeilingCheck
 var fall_contact: bool
-var coyote_timer = 0.0
-var coyote_time = 0.15
+var coyote_timer :float = 0.0
+var coyote_time :float = 0.15
 ## Enable or disable double jumping
 @export var double_jump_enable:bool = true
+var slide_jump_boost :bool
+
 
 # Head bobing
-const BOB_FQ = 2
-const BOB_AMP = 0.05
-var t_bob = 0.0
-@export var headbobbing = true
+const BOB_FQ :int = 2
+const BOB_AMP :float = 0.05
+var t_bob :float = 0.0
+@export var headbobbing :bool = true
+
 
 # Camera FOV
 ## Fov change while moving faster
-@export var fov_change_enable = true
-var BASE_FOV = 75.0
-const FOV_CHANGE = 1.5
-var velocity_clamped
-var target_fov
+@export var fov_change_enable :bool = true
+var BASE_FOV :float= 75.0
+const FOV_CHANGE :float= 1.5
+var velocity_clamped 
+var target_fov :float
 ## Changing this value is not recomended, this value is multiplied by delta in every equasion related to the camera movement and the FOV change
-@export var camera_delta_multiplier = 5.0
+@export var camera_delta_multiplier :float= 5.0
+
 
 # Camera vars
+@export var neck: Node
 ## Takes a Node or Node2D as parent of a Camera3D Node
 @export var head: Node
 ## Takes a Camera3D node
@@ -103,13 +121,13 @@ var target_fov
 @onready var original_camera_pos :Vector3 = camera.transform.origin
 @onready var crouching_head_pos = original_head_pos/10
 ## changing this value is not advised, if needed change very small quanteties (0.01)
-@export var mouse_sense = 0.06
-var camera_rotation = Vector3.ZERO
-var max_look_amount = 80
-var look_rotation = Vector3.ZERO
-var move_dir = Vector3.ZERO
+@export var mouse_sense :float = 0.06
+var camera_rotation  = Vector3.ZERO
+var max_look_amount :float = 80
+var look_rotation :Vector3 = Vector3.ZERO
+var move_dir :Vector3 = Vector3.ZERO
 ## enable head leaning sideways when moving left or right
-@export var head_leaning = true
+@export var head_leaning :bool = true
 var tilt_axis = Vector3()
 var tilt_angle = deg_to_rad(45)
 var tilt_amount = deg_to_rad(0.5) 
@@ -140,21 +158,11 @@ func _input(event):
 	if Input.is_action_just_pressed("ESC"):
 		debug_screen.visible = !debug_screen.visible
 		settings_menu.visible = !settings_menu.visible
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) if settings_menu.visible else Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
-
-	if Input.is_action_pressed("Crouch"):
-		standing_mesh.visible = false
-		standing_collision.disabled = true
-		crouching_mesh.visible = true
-		crouching_collision.disabled = false
-		is_crouching = true
-	elif !Input.is_action_pressed("Crouch") and !ceiling_check.is_colliding():
-		standing_mesh.visible = true
-		standing_collision.disabled = false
-		crouching_mesh.visible = false
-		crouching_collision.disabled = true
-		is_crouching = false
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) if (
+			settings_menu.visible
+			) else (
+				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+				)
 
 
 func _physics_process(delta):
@@ -164,6 +172,11 @@ func _physics_process(delta):
 	head.rotation_degrees.x = look_rotation.x
 	rotation_degrees.y = look_rotation.y
 
+	# Jump Variable
+	var is_jumping :bool = (
+		Input.is_action_pressed("Jump") and can_jump 
+		and !ceiling_check.is_colliding()
+		)
 
 	# Movement CHANGE
 	var direction = Vector3(Input.get_axis("Left", "Right"),0,
@@ -179,23 +192,60 @@ func _physics_process(delta):
 	# Sprint
 	if Input.is_action_pressed("Sprint"):
 		current_speed = lerp(current_speed, SPRINTING_SPEED, delta * ACCELERATION)
+		is_sprinting = true
+	
+		if direction != Vector3.ZERO and Input.is_action_just_pressed("Crouch"):
+			slide_vector = direction
+			is_sliding = true
+			slide_timer = slide_timer_max
+	
 	else:
 		current_speed = lerp(current_speed, WALKING_SPEED, delta * ACCELERATION)
+		is_sprinting = false
 
 
 	# Crouching
-	if is_crouching:
-		head.transform.origin = lerp(head.transform.origin, crouching_head_pos,delta * camera_delta_multiplier*2)
-	else:
-		head.transform.origin = lerp(head.transform.origin, original_head_pos,delta * camera_delta_multiplier*2)
-
-
-	# Jump Variable
-	var is_jumping :bool = Input.is_action_pressed("Jump") and can_jump and !ceiling_check.is_colliding()
+	if Input.is_action_pressed("Crouch") and is_on_floor():
+		is_crouching = true
+		standing_mesh.visible = false
+		standing_collision.disabled = true
+		crouching_mesh.visible = true
+		crouching_collision.disabled = false
+		
+		current_speed = lerp(current_speed, WALKING_SPEED/4, delta * ACCELERATION)
+		head.transform.origin = lerp(head.transform.origin,
+		 crouching_head_pos,delta * camera_delta_multiplier*2)
 	
+		if is_sprinting:
+			current_speed = lerp(current_speed, SPRINTING_SPEED/3, delta * ACCELERATION)
+	
+	elif !Input.is_action_pressed("Crouch") and !ceiling_check.is_colliding() or !is_on_floor():
+		standing_mesh.visible = true
+		standing_collision.disabled = false
+		crouching_mesh.visible = false
+		crouching_collision.disabled = true
+		
+		current_speed = lerp(current_speed, WALKING_SPEED, delta * ACCELERATION)
+		head.transform.origin = lerp(head.transform.origin,
+		 original_head_pos,delta * camera_delta_multiplier*2)
+		is_crouching = false
+
+
+	# Sliding
+	if is_sliding:
+		slide_timer -= delta
+		direction = (transform.basis * Vector3(slide_vector.x,0,slide_vector.z)).normalized()
+		current_speed = (slide_timer + 0.25) * sliding_speed
+
+		if slide_timer <= 0:
+			is_sliding = false
+
+
+	# Jumping
 	if is_on_floor():
 		coyote_timer = 0.0
 		can_jump = true
+		slide_jump_boost = false
 	else:
 		coyote_timer += delta
 		velocity.y -= gravity * delta
@@ -203,9 +253,14 @@ func _physics_process(delta):
 		velocity.z = lerp(velocity.z, direction.z * current_speed, delta * (ACCELERATION/2))
 	
 	if is_jumping and coyote_timer < coyote_time:
-#		velocity.y = 0
-		velocity.y = jump_force
-		can_jump = false
+#		is_sliding = false
+		if is_sliding:
+			velocity.y = jump_force*1.2
+			is_sliding = false
+			slide_jump_boost = true
+		elif !is_sliding and !slide_jump_boost:
+			velocity.y = jump_force
+			can_jump = false
 
 
 	# FOV

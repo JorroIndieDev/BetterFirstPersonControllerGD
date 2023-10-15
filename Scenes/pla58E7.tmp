@@ -21,14 +21,13 @@ material = ExtResource("3_tv4py")
 radius = 0.45
 height = 1.2
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("neck", "head", "camera")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("head", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_1toev")
 gravity = 22.0
 jump_force = 7.0
-neck = NodePath("Neck")
-head = NodePath("Neck/Head")
-camera = NodePath("Neck/Head/Camera3D")
+head = NodePath("Head")
+camera = NodePath("Head/Camera3D")
 
 [node name="StandingCollision" type="CollisionShape3D" parent="."]
 visible = false
@@ -39,19 +38,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
 shape = SubResource("CapsuleShape3D_n5607")
 disabled = true
 
-[node name="Neck" type="Node3D" parent="."]
-
-[node name="Head" type="Node3D" parent="Neck"]
+[node name="Head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.653292, 0)
 
-[node name="Camera3D" type="Camera3D" parent="Neck/Head"]
+[node name="Camera3D" type="Camera3D" parent="Head"]
 cull_mask = 1048573
 current = true
 frustum_offset = Vector2(1, 1)
 
-[node name="debug_screen" parent="Neck/Head/Camera3D" instance=ExtResource("2_h67mq")]
+[node name="debug_screen" parent="Head/Camera3D" instance=ExtResource("2_h67mq")]
 
-[node name="Settings" parent="Neck/Head/Camera3D" instance=ExtResource("3_ei7uj")]
+[node name="Settings" parent="Head/Camera3D" instance=ExtResource("3_ei7uj")]
 
 [node name="standing" type="MeshInstance3D" parent="."]
 layers = 2
