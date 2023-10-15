@@ -14,7 +14,7 @@ To do:
 	-!! raycast gravity check GROUNDCHECK
 	-ramp movement
 	-step climp
-	-wall jump
+	-wall jump / vaulting
 	for now this is all
 Currently doing:
 	implementing slide / ramp movemnt and raycasts
