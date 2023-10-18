@@ -83,8 +83,10 @@ var sliding_speed :float = 10.0
 ## Jumping heigh, default as 6.0 as default (float)
 @export var jump_force :float # 6
 @onready var coyote_jump :bool = true
-@onready var ground_check = $GroundCheck
-@onready var ceiling_check = $CeilingCheck
+## Ground Check is a RayCast3D node that slighly shows bellow the player collider and mesh
+@export var ground_check : RayCast3D
+## Ceiling Check is a RayCast3D node that slighly shows above the player collider and mesh
+@export var ceiling_check : RayCast3D
 var fall_contact: bool
 var coyote_timer :float = 0.0
 var coyote_time :float = 0.15
@@ -112,11 +114,12 @@ var target_fov :float
 
 
 # Camera vars
-@export var neck: Node
+## Takes a Node or Node2D as parent of the head Node3D Node
+@export var neck: Node3D
 ## Takes a Node or Node2D as parent of a Camera3D Node
-@export var head: Node
+@export var head: Node3D
 ## Takes a Camera3D node
-@export  var camera: Node
+@export  var camera: Camera3D
 @onready var original_head_pos :Vector3 = head.transform.origin
 @onready var original_camera_pos :Vector3 = camera.transform.origin
 @onready var crouching_head_pos = original_head_pos/10
@@ -194,10 +197,13 @@ func _physics_process(delta):
 		current_speed = lerp(current_speed, SPRINTING_SPEED, delta * ACCELERATION)
 		is_sprinting = true
 	
-		if direction != Vector3.ZERO and Input.is_action_just_pressed("Crouch"):
+		if direction != Vector3.ZERO and Input.is_action_just_pressed("Crouch"): # start slide
 			slide_vector = direction
 			is_sliding = true
 			slide_timer = slide_timer_max
+		elif !Input.is_action_pressed("Crouch"):
+			is_sliding = false
+			slide_timer = 0
 	
 	else:
 		current_speed = lerp(current_speed, WALKING_SPEED, delta * ACCELERATION)
@@ -211,13 +217,6 @@ func _physics_process(delta):
 		standing_collision.disabled = true
 		crouching_mesh.visible = true
 		crouching_collision.disabled = false
-		
-		current_speed = lerp(current_speed, WALKING_SPEED/4, delta * ACCELERATION)
-		head.transform.origin = lerp(head.transform.origin,
-		 crouching_head_pos,delta * camera_delta_multiplier*2)
-	
-		if is_sprinting:
-			current_speed = lerp(current_speed, SPRINTING_SPEED/3, delta * ACCELERATION)
 	
 	elif !Input.is_action_pressed("Crouch") and !ceiling_check.is_colliding() or !is_on_floor():
 		standing_mesh.visible = true
@@ -226,15 +225,20 @@ func _physics_process(delta):
 		crouching_collision.disabled = true
 		
 		current_speed = lerp(current_speed, WALKING_SPEED, delta * ACCELERATION)
-		head.transform.origin = lerp(head.transform.origin,
-		 original_head_pos,delta * camera_delta_multiplier*2)
+		
 		is_crouching = false
-
+	
+	if is_crouching:
+		current_speed = lerp(current_speed, WALKING_SPEED/4, delta * ACCELERATION)
+		head.transform.origin = lerp(head.transform.origin,
+		 crouching_head_pos,delta * camera_delta_multiplier*2)
+	elif is_sprinting and is_crouching:
+		current_speed = lerp(current_speed, SPRINTING_SPEED/3, delta * ACCELERATION)
 
 	# Sliding
 	if is_sliding:
 		slide_timer -= delta
-		direction = (transform.basis * Vector3(slide_vector.x,0,slide_vector.z)).normalized()
+#		direction = (transform.basis * Vector3(slide_vector.x,0,slide_vector.z)).normalized()
 		current_speed = (slide_timer + 0.25) * sliding_speed
 
 		if slide_timer <= 0:
@@ -253,7 +257,6 @@ func _physics_process(delta):
 		velocity.z = lerp(velocity.z, direction.z * current_speed, delta * (ACCELERATION/2))
 	
 	if is_jumping and coyote_timer < coyote_time:
-#		is_sliding = false
 		if is_sliding:
 			velocity.y = jump_force*1.2
 			is_sliding = false

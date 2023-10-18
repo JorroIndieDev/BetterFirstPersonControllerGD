@@ -21,17 +21,18 @@ material = ExtResource("3_tv4py")
 radius = 0.45
 height = 1.2
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("neck", "head", "camera")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ground_check", "ceiling_check", "neck", "head", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_1toev")
 gravity = 22.0
 jump_force = 7.0
+ground_check = NodePath("GroundCheck")
+ceiling_check = NodePath("CeilingCheck")
 neck = NodePath("Neck")
 head = NodePath("Neck/Head")
 camera = NodePath("Neck/Head/Camera3D")
 
 [node name="StandingCollision" type="CollisionShape3D" parent="."]
-visible = false
 shape = SubResource("CapsuleShape3D_swp7f")
 
 [node name="CrouchingCollision" type="CollisionShape3D" parent="."]
