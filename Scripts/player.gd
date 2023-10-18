@@ -62,10 +62,10 @@ const FRICTION :float= 3.0
 
 
 # Crouching vars
-@onready var crouching_mesh = $crouching
-@onready var crouching_collision = $CrouchingCollision
-@onready var standing_mesh = $standing
-@onready var standing_collision = $StandingCollision
+@export var crouching_mesh : MeshInstance3D
+@export var crouching_collision : CollisionShape3D
+@export var standing_mesh : MeshInstance3D
+@export var standing_collision : CollisionShape3D
 var is_crouching:bool
 
 
@@ -87,7 +87,7 @@ var sliding_speed :float = 10.0
 @export var ground_check : RayCast3D
 ## Ceiling Check is a RayCast3D node that slighly shows above the player collider and mesh
 @export var ceiling_check : RayCast3D
-var fall_contact: bool
+var fall_contact :bool
 var coyote_timer :float = 0.0
 var coyote_time :float = 0.15
 ## Enable or disable double jumping
@@ -225,7 +225,8 @@ func _physics_process(delta):
 		crouching_collision.disabled = true
 		
 		current_speed = lerp(current_speed, WALKING_SPEED, delta * ACCELERATION)
-		
+		head.transform.origin = lerp(head.transform.origin,
+		 original_head_pos,delta * camera_delta_multiplier*2)
 		is_crouching = false
 	
 	if is_crouching:

@@ -21,10 +21,14 @@ material = ExtResource("3_tv4py")
 radius = 0.45
 height = 1.2
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ground_check", "ceiling_check", "neck", "head", "camera")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("crouching_mesh", "crouching_collision", "standing_mesh", "standing_collision", "ground_check", "ceiling_check", "neck", "head", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_1toev")
 gravity = 22.0
+crouching_mesh = NodePath("crouching")
+crouching_collision = NodePath("CrouchingCollision")
+standing_mesh = NodePath("standing")
+standing_collision = NodePath("StandingCollision")
 jump_force = 7.0
 ground_check = NodePath("GroundCheck")
 ceiling_check = NodePath("CeilingCheck")
@@ -40,6 +44,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
 shape = SubResource("CapsuleShape3D_n5607")
 disabled = true
 
+[node name="standing" type="MeshInstance3D" parent="."]
+layers = 2
+mesh = SubResource("CapsuleMesh_y5t8c")
+
+[node name="crouching" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+layers = 2
+mesh = SubResource("CapsuleMesh_48adj")
+
 [node name="Neck" type="Node3D" parent="."]
 
 [node name="Head" type="Node3D" parent="Neck"]
@@ -54,17 +67,9 @@ frustum_offset = Vector2(1, 1)
 
 [node name="Settings" parent="Neck/Head/Camera3D" instance=ExtResource("3_ei7uj")]
 
-[node name="standing" type="MeshInstance3D" parent="."]
-layers = 2
-mesh = SubResource("CapsuleMesh_y5t8c")
-
-[node name="crouching" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
-layers = 2
-mesh = SubResource("CapsuleMesh_48adj")
-
 [node name="GroundCheck" type="RayCast3D" parent="."]
-target_position = Vector3(0, -2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.67936, 0)
+target_position = Vector3(0, -1.8, 0)
 
 [node name="CeilingCheck" type="RayCast3D" parent="."]
 target_position = Vector3(0, 1, 0)
