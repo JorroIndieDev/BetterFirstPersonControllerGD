@@ -299,7 +299,7 @@ func _physics_process(delta):
 	
 	if velocity != Vector3.ZERO and headbobbing:
 		camera.transform.origin = (
-			lerp(camera.transform.origin,_headbob(t_bob),
+			lerp(camera.transform.origin,headbob(t_bob),
 			delta * camera_delta_multiplier)
 			)
 	elif velocity == Vector3.ZERO and headbobbing:
@@ -318,7 +318,7 @@ func _physics_process(delta):
 	move_and_slide()
 
 
-func _headbob(time) -> Vector3:
+func headbob(time) -> Vector3:
 	var pos = Vector3.ZERO
 	pos.y = sin(time * BOB_FQ) * BOB_AMP
 	pos.x = sin(time * BOB_FQ/2) * BOB_AMP
