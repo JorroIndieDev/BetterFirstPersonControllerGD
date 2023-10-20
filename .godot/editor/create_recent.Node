@@ -1,3 +1,4 @@
+CSGCylinder3D
 Node3D
 Timer
 RayCast3D
@@ -22,6 +23,5 @@ CSGBox3D
 CollisionShape3D
 StaticBody3D
 CSGCombiner3D
-CSGCylinder3D
 CharacterBody3D
 Sprite3D

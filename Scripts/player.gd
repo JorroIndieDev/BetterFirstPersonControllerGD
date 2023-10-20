@@ -120,6 +120,7 @@ var target_fov :float
 @export var head: Node3D
 ## Takes a Camera3D node
 @export  var camera: Camera3D
+@onready var original_neck_pos :Vector3 = neck.transform.origin
 @onready var original_head_pos :Vector3 = head.transform.origin
 @onready var original_camera_pos :Vector3 = camera.transform.origin
 @onready var crouching_head_pos = original_head_pos/10
@@ -184,12 +185,13 @@ func _physics_process(delta):
 	# Movement CHANGE
 	var direction = Vector3(Input.get_axis("Left", "Right"),0,
 	 Input.get_axis("Forward", "Backwards")).normalized().rotated(Vector3.UP, rotation.y)
-	if direction and is_on_floor():
+	if direction and is_on_floor() and !is_sliding:
 		velocity.x = direction.x * current_speed
 		velocity.z = direction.z * current_speed
 	else:
-		velocity.x = lerp(velocity.x, direction.x * current_speed, delta * ACCELERATION)
-		velocity.z = lerp(velocity.z, direction.z * current_speed, delta * ACCELERATION)
+		if !is_sliding:
+			velocity.x = lerp(velocity.x, direction.x * current_speed, delta * ACCELERATION)
+			velocity.z = lerp(velocity.z, direction.z * current_speed, delta * ACCELERATION)
 	debug_flex2.text = str(direction) #not needed
 
 	# Sprint
@@ -225,13 +227,14 @@ func _physics_process(delta):
 		crouching_collision.disabled = true
 		
 		current_speed = lerp(current_speed, WALKING_SPEED, delta * ACCELERATION)
-		head.transform.origin = lerp(head.transform.origin,
-		 original_head_pos,delta * camera_delta_multiplier*2)
+		neck.transform.origin = lerp(neck.transform.origin,
+		 original_neck_pos,delta * camera_delta_multiplier*2)
 		is_crouching = false
+		is_sliding = false
 	
 	if is_crouching:
 		current_speed = lerp(current_speed, WALKING_SPEED/4, delta * ACCELERATION)
-		head.transform.origin = lerp(head.transform.origin,
+		neck.transform.origin = lerp(neck.transform.origin,
 		 crouching_head_pos,delta * camera_delta_multiplier*2)
 	elif is_sprinting and is_crouching:
 		current_speed = lerp(current_speed, SPRINTING_SPEED/3, delta * ACCELERATION)

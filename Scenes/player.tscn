@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b24ke3d0cg0m0"]
+[gd_scene load_steps=10 format=3 uid="uid://b24ke3d0cg0m0"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_1toev"]
 [ext_resource type="PackedScene" uid="uid://c50iiq4sxym4c" path="res://Scenes/debug_screen.tscn" id="2_h67mq"]
@@ -20,6 +20,9 @@ radius = 0.45
 material = ExtResource("3_tv4py")
 radius = 0.45
 height = 1.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ruvn3"]
+albedo_color = Color(0, 0.639216, 0.0666667, 1)
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("crouching_mesh", "crouching_collision", "standing_mesh", "standing_collision", "ground_check", "ceiling_check", "neck", "head", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -54,9 +57,9 @@ layers = 2
 mesh = SubResource("CapsuleMesh_48adj")
 
 [node name="Neck" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.653, 0)
 
 [node name="Head" type="Node3D" parent="Neck"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.653292, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Neck/Head"]
 cull_mask = 1048573
@@ -67,9 +70,21 @@ frustum_offset = Vector2(1, 1)
 
 [node name="Settings" parent="Neck/Head/Camera3D" instance=ExtResource("3_ei7uj")]
 
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Neck"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.506141)
+layers = 2
+radius = 0.01
+height = 1.0
+material = SubResource("StandardMaterial3D_ruvn3")
+
 [node name="GroundCheck" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.67936, 0)
 target_position = Vector3(0, -1.8, 0)
 
 [node name="CeilingCheck" type="RayCast3D" parent="."]
 target_position = Vector3(0, 1, 0)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.371923, -0.657114)
+radius = 0.005
+height = 1.0
