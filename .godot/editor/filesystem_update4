@@ -4,7 +4,6 @@ res://Textures/Material/DarkGrid.tres
 res://Textures/Material/OrangeGrid.tres
 res://Textures/Material/RedGrid.tres
 res://Textures/Material/greenGrid.tres
-res://Scripts/player.gd
 res://Scenes/test_level.tscn
 res://Scenes/debug_screen.tscn
 res://Scenes/settings.tscn

@@ -1,3 +1,6 @@
+AnimatedSprite2D
+ParallaxBackground
+TextureRect
 CSGCylinder3D
 Node3D
 Timer
@@ -6,7 +9,6 @@ CSGPolygon3D
 CanvasLayer
 Label
 ColorRect
-TextureRect
 Button
 VFlowContainer
 HFlowContainer
